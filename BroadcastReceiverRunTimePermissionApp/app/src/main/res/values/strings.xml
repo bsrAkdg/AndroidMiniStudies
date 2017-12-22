@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BroadcastReceiverRunTimePermissionApp</string>
+
+    <!-- permission title and subtitle -->
+    <string name="phonePermissionTitle">Aramalarınıza erişim isteği</string>
+    <string name="phonePermissionSubTitle">Bu uygulamanın aramalarınıza erişmesi için izin verilsin mi?</string>
+
+    <string name="allPermissionTitle">Tüm İzinler</string>
+    <string name="allPermissionSubTitle">Ayarlardan tüm izinler verilsin mi?</string>
+
+    <string name="permissionAllowed">İzin Verildi</string>
+    <!-- option button title -->
+    <string name="negativeTitle">Hayır</string>
+    <string name="possitiveTitle">Evet</string>
+
+    <!-- phone state title -->
+    <string name="ringing">Çalıyor...</string>
+    <string name="idle">Kapandı !</string>
+    <string name="offhook"> Beklemede...</string>
+</resources>
