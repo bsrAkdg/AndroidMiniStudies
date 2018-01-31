@@ -27,6 +27,7 @@ public class MyBoundService extends Service {
     @Override
     public void onDestroy() {
         Log.i(TAG, "onDestroy");
+        isContinue = false;
         super.onDestroy();
     }
 
@@ -34,7 +35,7 @@ public class MyBoundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
-        if (isContinue){
+        while (isContinue){
             String randomStr = UUID.randomUUID().toString();
             Log.i(TAG, randomStr);
         }
