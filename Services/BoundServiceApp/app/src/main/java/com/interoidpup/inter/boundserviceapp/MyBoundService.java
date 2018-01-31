@@ -35,11 +35,16 @@ public class MyBoundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
 
-        while (isContinue){
-            String randomStr = UUID.randomUUID().toString();
-            Log.i(TAG, randomStr);
-        }
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //farklı bir thread' e taşıdık.
+                while (isContinue){
+                    String randomStr = UUID.randomUUID().toString();
+                    Log.i(TAG, randomStr);
+                }
+            }
+        });
         return START_STICKY;
     }
 
