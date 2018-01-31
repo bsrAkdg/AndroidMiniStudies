@@ -38,7 +38,7 @@ public class MyBoundService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //farklı bir thread' e taşıdık.
+                //farklı bir thread' e taşıdık. Kilitlenmeyi engelledik.
                 while (isContinue){
                     String randomStr = UUID.randomUUID().toString();
                     Log.i(TAG, randomStr);
