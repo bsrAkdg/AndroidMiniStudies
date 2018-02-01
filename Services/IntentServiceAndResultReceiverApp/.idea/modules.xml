@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/IntentServiceAndResultReceiverApp.iml" filepath="$PROJECT_DIR$/IntentServiceAndResultReceiverApp.iml" />
+      <module fileurl="file://C:\bsrakdgGithub\AndroidSmallStudies\Services\IntentServiceAndResultReceiverApp\IntentServiceAndResultReceiverApp.iml" filepath="C:\bsrakdgGithub\AndroidSmallStudies\Services\IntentServiceAndResultReceiverApp\IntentServiceAndResultReceiverApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\bsrakdgGithub\AndroidSmallStudies\Services\IntentServiceAndResultReceiverApp\app\app.iml" filepath="C:\bsrakdgGithub\AndroidSmallStudies\Services\IntentServiceAndResultReceiverApp\app\app.iml" />
     </modules>
   </component>
 </project>
