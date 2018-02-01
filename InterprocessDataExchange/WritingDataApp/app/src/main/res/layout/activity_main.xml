@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.interoidpup.inter.writingdataapp.MainActivity">
+
+    <EditText
+        android:id="@+id/edtTxtData"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="dosyaya bir yazı kaydet"/>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edtTxtData"
+        android:text="KAYDET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:id="@+id/txtResult"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
