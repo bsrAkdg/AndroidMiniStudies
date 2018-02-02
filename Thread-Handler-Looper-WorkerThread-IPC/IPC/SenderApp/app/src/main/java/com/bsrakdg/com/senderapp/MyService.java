@@ -88,10 +88,11 @@ public class MyService extends Service {
             Bundle bundle = new Bundle();
             bundle.putString("randomString", getRandomStr());
             message.setData(bundle);
-            
+
             //gelene cevap ver
             try {
                 msg.replyTo.send(message);
+                Log.e(TAG, "Mesaj gönderildi : " + getRandomStr());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

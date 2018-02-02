@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,40 @@
     tools:context="com.bsrakdg.com.receiverapp.MainActivity">
 
     <TextView
+        android:layout_marginTop="100dp"
+        android:id="@+id/txtReceive"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buraya değer gelecek"
+        android:gravity="center"/>
+    <Button
+        android:id="@+id/btnBindService"
+        android:layout_below="@+id/txtReceive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Servise Bağlan"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btnUnbindService"
+        android:layout_below="@+id/btnBindService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Servis Bağlantısını Kes"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/btnReceive"
+        android:layout_below="@+id/btnUnbindService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SenderApp' ten Random String Al"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+
+</RelativeLayout>

@@ -7,7 +7,7 @@
     tools:context="com.bsrakdg.com.senderapp.MainActivity">
 
     <Button
-        android:id="@+id/btnStart"
+        android:id="@+id/btnStartService"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
@@ -15,8 +15,8 @@
         android:text="Servis Başlat" />
 
     <Button
-        android:id="@+id/btnStop"
-        android:layout_below="@+id/btnStart"
+        android:id="@+id/btnStopService"
+        android:layout_below="@+id/btnStartService"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
