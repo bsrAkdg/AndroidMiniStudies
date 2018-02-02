@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     // Bu projede amaç : Main thread' den worker thread' e veri gönderme.
-    // Handle' ı nerede create edersen o thread' e bağlanır.
+    // Handler' ı nerede create edersen o thread' e bağlanır.
     // HandlerApp' te onCreate()' te create ettiğimiz için -> worker thread : sendMessage() -> main thread : handleMessage();
     // LooperApp' te worker thread' te create ettiğimiz için -> main thread : sendMessage() -> worker thread : handleMessage();
     // bunun için custom bir thread oluşturalım
