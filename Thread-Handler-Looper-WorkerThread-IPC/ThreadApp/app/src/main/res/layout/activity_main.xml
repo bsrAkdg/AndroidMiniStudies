@@ -23,4 +23,12 @@
         android:layout_centerVertical="true"
         android:text="Thread Durdur"/>
 
+    <TextView
+        android:id="@+id/txtLoop"
+        android:layout_below="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
 </RelativeLayout>
