@@ -2,7 +2,12 @@ package com.bsrakdg.com.senderapp;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
 import java.util.UUID;
@@ -11,14 +16,19 @@ public class MyService extends Service {
 
     private String TAG = "MyService";
     private boolean isContinue = true;
-    String randomStr = "";
+    private String randomStr = "";
 
     public MyService() {
     }
 
+    // processler arası iletişimi Messanger sağlar. Messenger parametre olarak, ya handler ya da ibender alır.
+    // İsteği karşılayan da Handler. Custom Handler classı oluşturup parametre olarak Messenger' a verdik.
+    private Messenger messenger = new Messenger(new SupplyClaimHandler());
+
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        //Messenger, IBinder' ı sarmalayan bir yapıdır.
+        return messenger.getBinder();
     }
 
     @Override
@@ -55,6 +65,10 @@ public class MyService extends Service {
         }
     }
 
+    public String getRandomStr(){
+        return randomStr;
+    }
+
     @Override
     public void onDestroy() {
         isContinue = false;
@@ -62,4 +76,25 @@ public class MyService extends Service {
         super.onDestroy();
     }
 
+    // farklı processten gelen isteği alıp cevaplayacak.
+    class SupplyClaimHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            //gelen msg' yi cevap vermek için kullanıyorum
+            //öncelikle göndereceğim message' ı hazırlıyorum
+            Message message = Message.obtain(null, 1); //1, resultCode gibi düşün.
+            Bundle bundle = new Bundle();
+            bundle.putString("randomString", getRandomStr());
+            message.setData(bundle);
+            
+            //gelene cevap ver
+            try {
+                msg.replyTo.send(message);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
