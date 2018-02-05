@@ -16,9 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".internal.InternalStorageActivity"/>
         <activity android:name=".internal.InternalStorageShowActivity"/>
-        <activity android:name=".ExternalStorageActivity"/>
+        <activity android:name=".CacheStorageActivity"/>
+        <activity android:name=".external.ExternalStorageActivity"/>
+
     </application>
 
 </manifest>

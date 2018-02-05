@@ -5,7 +5,7 @@
 
     <EditText
         android:padding="10dp"
-        android:id="@+id/edtTxtDataPrivate"
+        android:id="@+id/edtTxtDataInternal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Veri giriniz"
@@ -14,35 +14,35 @@
         android:layout_alignParentTop="true"/>
 
     <Button
-        android:layout_below="@+id/edtTxtDataPrivate"
-        android:id="@+id/btnSaveCachePrivate"
-        android:onClick="saveDataToExternalPrivate"
-        android:text="DATAYI EXTERNAL PRIVATE' E KAYDET"
+        android:layout_below="@+id/edtTxtDataInternal"
+        android:id="@+id/btnSaveCacheInternal"
+        android:onClick="saveDatatoInternalCache"
+        android:text="DATAYI INTERNAL CACHE' E KAYDET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_below="@+id/btnSaveCachePrivate"
-        android:id="@+id/btnGetCachePrivate"
-        android:onClick="getDataFromExternalPrivate"
-        android:text="EXTERNAL PRIVATE' DEN DATAYI GETİR"
+        android:layout_below="@+id/btnSaveCacheInternal"
+        android:id="@+id/btnGetCacheInternal"
+        android:onClick="getDataFromInternalCache"
+        android:text="INTERNAL CACHE' DEN DATAYI GETİR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- PUBLİC  -->
+    <!-- external  -->
     <TextView
         android:minLines="3"
         android:padding="10dp"
-        android:layout_below="@+id/btnGetCachePrivate"
-        android:id="@+id/txtFileContentPrivate"
+        android:layout_below="@+id/btnGetCacheInternal"
+        android:id="@+id/txtFileContentInternal"
         android:hint="Dosya içeriği"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:layout_below="@+id/txtFileContentPrivate"
+        android:layout_below="@+id/txtFileContentInternal"
         android:padding="10dp"
-        android:id="@+id/edtTxtDataPublic"
+        android:id="@+id/edtTxtDataExternal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Veri giriniz"
@@ -50,26 +50,26 @@
         android:layout_centerVertical="true"/>
 
     <Button
-        android:layout_below="@+id/edtTxtDataPublic"
-        android:id="@+id/btnSaveCacheEPublic"
-        android:onClick="saveDataToExternalPublic"
-        android:text="DATAYI EXTERNAL PUBLIC' E KAYDET"
+        android:layout_below="@+id/edtTxtDataExternal"
+        android:id="@+id/btnSaveCacheExternal"
+        android:onClick="saveDatatoCacheExternal"
+        android:text="DATAYI EXTERNAL CACHE' E KAYDET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_below="@+id/btnSaveCacheEPublic"
-        android:id="@+id/btnGetCachePublic"
-        android:onClick="getDataFromExternalPublic"
-        android:text="EXTERNAL PUBLIC' DEN DATAYI GETİR"
+        android:layout_below="@+id/btnSaveCacheExternal"
+        android:id="@+id/btnGetCacheExternal"
+        android:onClick="getDataFromExternalCache"
+        android:text="EXTERNAL CACHE' DEN DATAYI GETİR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:minLines="3"
         android:padding="10dp"
-        android:layout_below="@+id/btnGetCachePublic"
-        android:id="@+id/txtFileContentPublic"
+        android:layout_below="@+id/btnGetCacheExternal"
+        android:id="@+id/txtFileContentExternal"
         android:hint="Dosya içeriği"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

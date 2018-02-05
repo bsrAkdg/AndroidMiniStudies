@@ -22,8 +22,8 @@ import java.io.IOException;
 
 public class InternalStorageActivity extends AppCompatActivity {
 
-    //Amaç : belirttiğimiz dosya adıyla oluşturulan dosyaya bir şeyler yazıp kaydedicez.
-    // Daha sonra dosyanın içeriğini, path' nigösterip o dosyayı silebileceğiz.
+    //Amaç : belirttiğimiz dosya adıyla oluşturulan dosyaya bir şeyler yazıp kaydedeceğiz.
+    // Daha sonra dosyanın içeriğini, path' ni gösterip o dosyayı silebileceğiz.
     private EditText edtTxtFileName, edtTxtMessage, edtTxtDeleteFile;
     private TextView txtInternalStoragePath, txtFilesList;
 
