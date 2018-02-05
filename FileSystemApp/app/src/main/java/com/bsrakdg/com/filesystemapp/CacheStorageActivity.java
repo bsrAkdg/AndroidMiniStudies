@@ -133,7 +133,6 @@ public class CacheStorageActivity extends AppCompatActivity {
             //finally' de memory leak' e sebep olmamak için mutlaka stream' ı kapat!
             if (fileInputStream != null){
                 try {
-                    txtFileContentInternal.setText(stringBuffer.toString());
                     fileInputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
