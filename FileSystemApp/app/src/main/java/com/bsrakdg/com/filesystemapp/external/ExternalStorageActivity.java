@@ -27,7 +27,7 @@ public class ExternalStorageActivity extends AppCompatActivity {
 
     // Amaç : belirttiğimiz dosya adıyla oluşturulan dosyaya bir şeyler yazıp kaydedeceğiz.
     // private dosyalar :  storage -> emulated(sdcard) -> 0 -> Android -> data -> package -> files -> belirlediğimiz dizin -> belirlediğimiz dosya
-    // External Storage' a yazmak ve ordan okumak istiyorsak API 23 öncesi : manifeste izin eklemeliyiz, API 23 VE SONRASI : runtime permission
+    // publiic storage -> emulated(sdcard) -> 0
     TextView txtFileContentPrivate, txtFileContentPublic;
     EditText edtTxtDataPrivate, edtTxtDataPublic;
 
@@ -67,19 +67,31 @@ public class ExternalStorageActivity extends AppCompatActivity {
 
     public void saveDataToExternalPublic(View view) {
         String strExternalPublicData = edtTxtDataPublic.getText().toString(); //yazılacak data' yı al
-        //File fileDir = Environment.getExternalStoragePublicDirectory("bsrFolder"); //kendi belirldiğimiz dizin
-        File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS); //public dosyaların hepsine böyle erişebiliriz.
-        File newFile = new File(filePath, strPublicFileName);
-        writeToFile(newFile, strExternalPublicData);
+
+        //external storage her zaman erişilebilir olmayabilir. Kullanmadan önce mutlaka kontrol et!
+        if (isExternalWriteAvailable()){
+            //File fileDir = Environment.getExternalStoragePublicDirectory("bsrFolder"); //kendi belirldiğimiz dizin
+            File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS); //public dosyaların hepsine böyle erişebiliriz.
+            File newFile = new File(filePath, strPublicFileName);
+            writeToFile(newFile, strExternalPublicData);
+        }else{
+            Toast.makeText(this, "External Storage' a erişilemiyot.",Toast.LENGTH_LONG).show();
+        }
+
 
     }
 
     public void getDataFromExternalPublic(View view) {
-        File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-        File readFile = new File(filePath, strPublicFileName);
-        if (readToFile(readFile) != null){
-            txtFileContentPublic.setText(readToFile(readFile));
+        if (isExternalReadAvailable()){
+            File filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File readFile = new File(filePath, strPublicFileName);
+            if (readToFile(readFile) != null){
+                txtFileContentPublic.setText(readToFile(readFile));
+            }
+        }else{
+            Toast.makeText(this, "External Storage' a erişilemiyot.",Toast.LENGTH_LONG).show();
         }
+        
     }
 
 
@@ -136,6 +148,23 @@ public class ExternalStorageActivity extends AppCompatActivity {
             }
         }
         return stringBuffer.toString();
+    }
+
+    //external erişilebilir mi aktif mi?
+    boolean isExternalWriteAvailable(){
+        String strWriteState = Environment.getExternalStorageState(); //o anki external storage' in durumunu getir
+        if (Environment.MEDIA_MOUNTED.equals(strWriteState)){ //MEDIA_MOUNTED : sdkart sisteme eklenmişse
+            return true;
+        }
+        return false;
+    }
+
+    boolean isExternalReadAvailable(){
+        String strReadState = Environment.getExternalStorageState(); //o anki external storage' in durumunu getir
+        if (Environment.MEDIA_MOUNTED.equals(strReadState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(strReadState)){ //MEDIA_MOUNTED_READ_ONLY : sadece okunabilirde olabilir
+            return true;
+        }
+        return false;
     }
 
 }
