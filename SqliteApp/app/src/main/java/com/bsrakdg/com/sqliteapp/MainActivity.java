@@ -1,6 +1,7 @@
 package com.bsrakdg.com.sqliteapp;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,7 +15,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.bsrakdg.com.sqliteapp.db.DatabaseHelper;
+
 public class MainActivity extends AppCompatActivity {
+    // Amaç : Sqlite' a veri kaydedip okuma işlemlerini gerçekleştirme
+    /* Adımlar : 1. Tablolarını ve ilişkiselliği belirle (foreign key)
+                 2. NoteContact sınıfında tablo ve column adlarını sabit olarak oluştur.
+                 3. DatabaseHelper sınıfında tablonu oluştur ve güncelle.
+                 4. Nerede kullanıcaksan orada DatabaseHelper nesnesi oluştur.
+    */
+    DatabaseHelper databaseHelper;
+    SQLiteDatabase sqLiteDatabase;
 
     Spinner spnrCategories;
     ListView lstNotes;
@@ -26,14 +37,6 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         spnrCategories = (Spinner) findViewById(R.id.spnrCategories);
         lstNotes = (ListView) findViewById(R.id.lstNotes);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        init();
 
         setSupportActionBar(toolbar);
 
@@ -45,6 +48,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setNotesAdapter();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        init();
+
+        //Yukarıdaki database maddelerini tamamladıktan sonra helper' ı çalıştırdıktan sonra contract çalışacak.
+        databaseHelper = new DatabaseHelper(this);
+        //Database' de okuma işlemini aktifleştirmek için :
+        sqLiteDatabase = databaseHelper.getReadableDatabase();
+
+
     }
 
     void setNotesAdapter(){
