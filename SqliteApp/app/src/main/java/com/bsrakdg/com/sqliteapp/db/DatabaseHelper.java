@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     COLUMN_FINISH_DATE TEXT, COLUMN_DONE TEXT, COLUMN_CATEGORY_ID INTEGER, FOREIGN_KEY(COLUMN_CATEGORY_ID) REFERENCES CATEGORIES(_ID))
     */
     private static final String TABLE_NOTES_CREATE =
-            "CREATE TABLE" + NoteEntry.TABLE_NAME + " (" +
+            "CREATE TABLE " + NoteEntry.TABLE_NAME + " (" +
             NoteEntry.ID + " INTEGER PRIMARY KEY, " +
             NoteEntry.COLUMN_NOTE + " TEXT, "+
             NoteEntry.COLUMN_CREATE_DATE + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
