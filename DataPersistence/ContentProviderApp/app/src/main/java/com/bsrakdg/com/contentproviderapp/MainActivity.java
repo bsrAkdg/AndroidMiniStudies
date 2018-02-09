@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    //Amaç : rehberdeki kişiler çekip listelemek
+    //bunun için isteğimizi belirten bir content resolver gerekli
+    //content resolver' ın query metodu ile koşullar ne ne istediğimiz belirtirilerek geriye bir cursor elde edilir.
+    
     List<User> userList = new ArrayList<>();
     RecyclerView rcyclerUser;
 
