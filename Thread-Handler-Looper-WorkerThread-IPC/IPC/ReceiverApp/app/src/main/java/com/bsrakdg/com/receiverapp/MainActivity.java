@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceDisconnected(ComponentName componentName) {
             isConnected = false;
             sendRequestMessenger = null; //messenger bağlantıyı sağladığı çin onuda null yap.
+            receiveResultMessenger = null; //gelen değeri karşılayan messenger'ı null yap.
             Log.e(TAG, "onServiceDisconnected");
         }
     };
