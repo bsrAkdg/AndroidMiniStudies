@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/btnAllUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:onClick="showAllUser"
+        android:text="Tüm Kişiler" />
+
+    <TextView
+        android:id="@+id/txtAllUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="TÜM KİŞİLER"
+        android:layout_below="@+id/btnNewUser"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="73dp" />
+
+    <EditText
+        android:id="@+id/edtTxtRemoveToUserid"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnAllUsers"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Silinecek"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnRemoveUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnAllUsers"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@+id/edtTxtRemoveToUserid"
+        android:layout_toRightOf="@+id/edtTxtRemoveToUserid"
+        android:onClick="removeUser"
+        android:text="Sil" />
+
+    <EditText
+        android:id="@+id/edtTxtShowToUserid"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtTxtRemoveToUserid"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Gösterilecek"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnShowUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnRemoveUser"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@+id/edtTxtShowToUserid"
+        android:layout_toRightOf="@+id/edtTxtShowToUserid"
+        android:onClick="showUser"
+        android:text="Bul" />
+
+    <EditText
+        android:id="@+id/edtTxtNewUser"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtTxtShowToUserid"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Yeni Kişi"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnNewUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edtTxtNewUser"
+        android:layout_below="@+id/btnShowUser"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@+id/edtTxtNewUser"
+        android:layout_toRightOf="@+id/edtTxtNewUser"
+        android:onClick="addNewUser"
+        android:text="Ekle" />
+
+</RelativeLayout>
