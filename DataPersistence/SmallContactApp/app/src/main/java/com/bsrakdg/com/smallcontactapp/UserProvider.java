@@ -17,7 +17,7 @@ import android.support.annotation.Nullable;
  */
 
 public class UserProvider extends ContentProvider {
-    // User datasına erişip onunla ilgili işlemler yapmak için bir Content provider birde (2) database(1) tanımlıyoruz.
+    // User datasına erişip onunla ilgili işlemler yapmak için Content provider ve (2) database(1) tanımlıyoruz.
     // 1. DATABASE
     // Bir database oluşturuyoruz : kullanıcı ekleme silme güncelleme için.
     private final static String DATABASE_NAME = "user.db";
@@ -53,8 +53,15 @@ public class UserProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String s1) {
+
+        switch (uriMatcher.match(uri)){
+            case 10:
+                Cursor cursor = sqLiteDatabase.query(USER_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                return cursor;
+            default:
+                throw new IllegalArgumentException("Unknow URI" + uri);
+        }
     }
 
     @Nullable
@@ -75,14 +82,20 @@ public class UserProvider extends ContentProvider {
                     Uri _uri = ContentUris.withAppendedId(CONTENT_URI, addedRowId);
                     return _uri;
                 }
-                break;
         }
         return null;
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        int deletedRowCount = -1;
+
+        switch (uriMatcher.match(uri)){
+            case 10:
+               deletedRowCount = sqLiteDatabase.delete(USER_TABLE_NAME, selection, selectionArgs);
+               break;
+        }
+        return deletedRowCount;
     }
 
     @Override
