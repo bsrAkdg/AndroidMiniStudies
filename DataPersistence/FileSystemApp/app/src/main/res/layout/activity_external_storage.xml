@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/edtTxtDataPrivate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Veri giriniz"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:layout_below="@+id/edtTxtDataPrivate"
+        android:id="@+id/btnSaveCachePrivate"
+        android:onClick="saveDataToExternalPrivate"
+        android:text="DATAYI EXTERNAL PRIVATE' E KAYDET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_below="@+id/btnSaveCachePrivate"
+        android:id="@+id/btnGetCachePrivate"
+        android:onClick="getDataFromExternalPrivate"
+        android:text="EXTERNAL PRIVATE' DEN DATAYI GETİR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- PUBLİC  -->
+    <TextView
+        android:minLines="3"
+        android:padding="10dp"
+        android:layout_below="@+id/btnGetCachePrivate"
+        android:id="@+id/txtFileContentPrivate"
+        android:hint="Dosya içeriği"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:layout_below="@+id/txtFileContentPrivate"
+        android:padding="10dp"
+        android:id="@+id/edtTxtDataPublic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Veri giriniz"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:layout_below="@+id/edtTxtDataPublic"
+        android:id="@+id/btnSaveCacheEPublic"
+        android:onClick="saveDataToExternalPublic"
+        android:text="DATAYI EXTERNAL PUBLIC' E KAYDET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_below="@+id/btnSaveCacheEPublic"
+        android:id="@+id/btnGetCachePublic"
+        android:onClick="getDataFromExternalPublic"
+        android:text="EXTERNAL PUBLIC' DEN DATAYI GETİR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:minLines="3"
+        android:padding="10dp"
+        android:layout_below="@+id/btnGetCachePublic"
+        android:id="@+id/txtFileContentPublic"
+        android:hint="Dosya içeriği"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

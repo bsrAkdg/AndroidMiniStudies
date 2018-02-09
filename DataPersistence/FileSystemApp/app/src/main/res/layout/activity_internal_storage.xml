@@ -1,0 +1,100 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".internal.InternalStorageActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtTxtFileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Dosya adı" />
+
+        <EditText
+            android:id="@+id/edtTxtMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Mesaj" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSaveToInternal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Verileri Dosyaya Kaydet"
+        android:onClick="saveToInternalStorage"
+        />
+
+    <Button
+        android:id="@+id/btnShowInternalStorage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dosyaları Görüntüle"
+        android:onClick="moveToDisplayScreen"
+        />
+
+    <Button
+        android:id="@+id/btnShowInternalPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Internal Storage Dosya Yolu"
+        android:onClick="showInternalStoragePath" />
+
+    <TextView
+        android:id="@+id/txtInternalStoragePath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:text="Internal Storage Yolu"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/btnShowFileList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Internal Storage' daki Dosya Listesi"
+        android:onClick="showFilesList" />
+
+    <TextView
+        android:id="@+id/txtFilesList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dosya Adları"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dosyayı Sil"
+            android:onClick="deleteFile" />
+
+        <EditText
+            android:id="@+id/edtTxtDeleteFile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Silinecek Dosya Adı" />
+
+    </LinearLayout>
+
+</LinearLayout>
