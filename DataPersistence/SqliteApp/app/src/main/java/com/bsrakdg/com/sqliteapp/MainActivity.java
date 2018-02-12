@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,9 +29,8 @@ public class MainActivity extends AppCompatActivity {
                  2. NoteContact sınıfında tablo ve column adlarını sabit olarak oluştur.
                  3. DatabaseHelper sınıfında tablonu oluştur ve güncelle.
                  4. Nerede kullanıcaksan orada DatabaseHelper nesnesi oluştur
-                 5.
-
     */
+
     DatabaseHelper databaseHelper;
     SQLiteDatabase sqLiteDatabase;
 
@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NoteActivity.class));
             }
         });
+
+        //content provider ile insert işlemi örneği
+        addCategori();
 
         setNotesAdapter();
     }
@@ -105,6 +108,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //provider ile database işlemleri
+    void addCategori(){
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteContract.CategoryEntry.COLUMN_CATEGORY, "Deneme Kategori");
+        Uri resultUri = getContentResolver().insert(NoteContract.CategoryEntry.COTNENT_URI, contentValues);
+        Toast.makeText(this, "Eklendi : " + resultUri, Toast.LENGTH_LONG).show();
+
     }
 
     private void createNote(){

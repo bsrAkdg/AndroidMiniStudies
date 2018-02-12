@@ -21,7 +21,10 @@
         </activity>
         <activity android:name=".CategoryActivity"/>
         <activity android:name=".NoteActivity"/>
-
+        <provider
+            android:authorities="com.bsrakdg.com.sqliteapp.db.NoteProvider"
+            android:name=".db.NoteProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
