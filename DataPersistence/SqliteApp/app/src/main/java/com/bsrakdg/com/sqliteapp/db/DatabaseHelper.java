@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             NoteEntry.COLUMN_DONE + " INTEGER, " +
             NoteEntry.COLUMN_CATEGORY_ID + " INTEGER, " +
             "FOREIGN KEY ( "+ NoteEntry.COLUMN_CATEGORY_ID +")  " + "REFERENCES "+ CategoryEntry.TABLE_NAME + " (" + CategoryEntry.ID +"))";
-
+    // FOREIGN KEY' i onConfigure()' de aktifleştirmemiz lazım.
 
     public DatabaseHelper(Context context) {
         //context, database adı, geri değer dönüyorsa cursor, database versiyon kodu
@@ -54,6 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(TABLE_CATEGORİES_CREATE);
         sqLiteDatabase.execSQL(TABLE_NOTES_CREATE);
 
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase sqLiteDatabase) {
+        //veri bütünlüğünü sağlaması için.
+        sqLiteDatabase.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override

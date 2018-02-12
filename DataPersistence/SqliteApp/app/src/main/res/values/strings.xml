@@ -3,6 +3,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Ayarlar</string>
     <string name="action_category">Kategoriler</string>
+    <string name="action_remove_notes">Tüm Notları Sil</string>
+    <string name="action_remove_categories">Tüm Kategorileri Sil</string>
 
     <string-array name="categories">
         <item>Genel</item>

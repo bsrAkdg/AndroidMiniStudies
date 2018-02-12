@@ -26,16 +26,14 @@ import com.bsrakdg.com.sqliteapp.db.NoteContract;
 public class MainActivity extends AppCompatActivity {
     //Amaç : Sqlite' a veri kaydedip okuma işlemlerini gerçekleştirme
 /*    custom datavase işlemleri adımlar
+                 TODO -- Sqlite Örnek işlemler
                  1. Tablolarını ve ilişkiselliği belirle (foreign key)
                  2. NoteContact sınıfında tablo ve column adlarını sabit olarak oluştur.
                  3. DatabaseHelper sınıfında tablonu oluştur ve güncelle.
                  4. Nerede kullanıcaksan orada DatabaseHelper nesnesi oluştur
                  5. Bu activity' de content resolver' a content uri kullanarak isteğini gönder.
 
-*/
-
-
-/*    content provider adımlar :
+      content provider ile database adımları :
                  1. Tablolarını ve ilişkiselliği belirle (foreign key)
                  2. NoteContact sınıfında tablo ve column adlarını sabit olarak oluştur.
                  3. DatabaseHelper oluştur
@@ -43,8 +41,13 @@ public class MainActivity extends AppCompatActivity {
                  5. Bu activity' de content resolver' a content uri kullanarak isteğini gönder.
 */
 
+/*  TODO -- Sqlite Örnek işlemler
     DatabaseHelper databaseHelper;
-    SQLiteDatabase sqLiteDatabase;
+    SQLiteDatabase sqLiteDatabase;*/
+
+    //silme işleminde -1 hepsini sil demek
+    private static final int ALL_NOTES = -1;
+    private static final int ALL_CATEGORIES = -1;
 
     Spinner spnrCategories;
     ListView lstNotes;
@@ -67,9 +70,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setNotesAdapter();
+        setCursorAdapter();
 
-        deteleNoteWithProvider();
     }
 
     @Override
@@ -79,24 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
-        // custom database işlemleri
-        databaseHelper = new DatabaseHelper(this);
-        sqLiteDatabase = databaseHelper.getReadableDatabase();
-
     }
 
-    void setNotesAdapter(){
-        String[] notes = getResources().getStringArray(R.array.notes);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.list_item, R.id.txtNote, notes );
-        lstNotes.setAdapter(adapter);
-        lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent noteIntent = new Intent(MainActivity.this, NoteActivity.class);
-                noteIntent.putExtra("noteContent", (String) lstNotes.getItemAtPosition(i));
-                startActivity(noteIntent);
-            }
-        });
+    void setCursorAdapter(){
+        Cursor cursor = showAllNotesWithProvider();
+        NotesCursorAdapter notesCursorAdapter = new NotesCursorAdapter(this, cursor, false); //autoRequery mutlaka false yap main thread' i kitliyor.
+        lstNotes.setAdapter(notesCursorAdapter);
     }
 
     @Override
@@ -114,11 +104,132 @@ public class MainActivity extends AppCompatActivity {
         }else if(id == R.id.action_category){
             startActivity(new Intent(MainActivity.this, CategoryActivity.class));
             return true;
+        }else if(id == R.id.action_delete_all_notes){
+        //    deleteNoteWithProvider(ALL_NOTES);
+             return true;
+        }else if(id == R.id.action_delete_all_categories){
+        //    deleteCategoryWithProvider(ALL_CATEGORIES);
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    // custom database işlemleri - başlangıç
+
+    //provider ile database işlemleri - başlangıç
+    void addCategory(String strCategory){
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteContract.CategoryEntry.COLUMN_CATEGORY, strCategory);
+        Uri resultUri = getContentResolver().insert(NoteContract.CategoryEntry.COTNENT_URI, contentValues);
+        Toast.makeText(this, "Eklendi : " + resultUri, Toast.LENGTH_LONG).show();
+
+    }
+
+    void showCategory(){
+
+        String[] projection = {"_id", "category"};
+        Cursor cursor = getContentResolver().query(NoteContract.CategoryEntry.COTNENT_URI, projection, null, null, null, null);
+        String allCategories = "";
+        while (cursor.moveToNext()){
+            String id = cursor.getString(0);
+            String category = cursor.getString(1);
+
+            allCategories = allCategories + " id : " + id + " kategori : " + category + "\n";
+        }
+        Toast.makeText(this, allCategories, Toast.LENGTH_LONG).show();
+
+    }
+
+    void addNoteWithProvider(String strNote){
+
+        ContentValues newNote = new ContentValues();
+        newNote.put(NoteContract.NoteEntry.COLUMN_NOTE, strNote  );
+        newNote.put(NoteContract.NoteEntry.COLUMN_CATEGORY_ID, 1);
+        newNote.put(NoteContract.NoteEntry.COLUMN_CREATE_DATE, "10-02-2018");
+        newNote.put(NoteContract.NoteEntry.COLUMN_DONE, 1);
+
+        Uri resultUri = getContentResolver().insert(NoteContract.NoteEntry.COTNENT_URI, newNote);
+        Toast.makeText(this, "Eklendi : " + resultUri, Toast.LENGTH_LONG).show();
+
+    }
+
+    Cursor showAllNotesWithProvider(){
+
+        //iki tabloyu joinlediğimiz için hangi alanları göstermek istiyorsak o tabloyu başına yazmalıyız.
+        String[] projection = {"Notes._id", "Notes.note", "Categories._id", "Categories.category"};
+        Cursor resultCursor = getContentResolver().query(NoteContract.NoteEntry.COTNENT_URI, projection, null, null, null );
+/*
+        String strAllNotes = "";
+
+        while(resultCursor.moveToNext()){
+            for (int i = 0; i<=3; i++){
+                strAllNotes += resultCursor.getString(i) + " - ";
+            }
+            strAllNotes += "\n";
+        }
+        Toast.makeText(this, strAllNotes, Toast.LENGTH_LONG).show();
+*/
+        return resultCursor;
+
+    }
+
+    void updateNoteWithProvider(){
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "yine güncellendi");
+        String selection = " _id = ?";
+        String[] selectionArgs = {"2"};
+
+        int id = getContentResolver().update(NoteContract.NoteEntry.COTNENT_URI, contentValues, selection, selectionArgs);
+        Toast.makeText(this, "Not güncellendi : " + id, Toast.LENGTH_SHORT).show();
+
+    }
+
+    void deleteNoteWithProvider(int removedId){
+
+        String selection = " _id = ?";
+        String[] selectionArgs = {String.valueOf(removedId)};
+
+        if (removedId == ALL_NOTES){ //hepsini sil işlemi için
+            selectionArgs= null;
+            selection= null;
+        }
+        int id = getContentResolver().delete(NoteContract.NoteEntry.COTNENT_URI, selection, selectionArgs);
+
+        Toast.makeText(this, "Not silindi : " + id, Toast.LENGTH_SHORT).show();
+
+    }
+
+    void deleteCategoryWithProvider(int removedId){
+
+        String selection = " _id = ?";
+        String[] selectionArgs = {String.valueOf(removedId)};
+
+        if (removedId == ALL_CATEGORIES){ //hepsini sil işlemi için
+            selectionArgs= null;
+            selection= null;
+        }
+        int id = getContentResolver().delete(NoteContract.CategoryEntry.COTNENT_URI, selection, selectionArgs);
+
+        Toast.makeText(this, "Category silindi : " + id, Toast.LENGTH_SHORT).show();
+
+    }
+    //provider ile database işlemleri - bitiş
+
+
+/*  TODO -- Sqlite Örnek işlemler
+    onCreate(){
+
+         init();
+
+        // custom database işlemleri
+        databaseHelper = new DatabaseHelper(this);
+        sqLiteDatabase = databaseHelper.getReadableDatabase();
+
+        setNotesAdapter();
+    }
+
     private void addNote(){
 
         databaseHelper = new DatabaseHelper(this);
@@ -198,88 +309,19 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Silinen satır sayısı: "+ changeRowCount, Toast.LENGTH_LONG).show();
 
     }
-    // custom database işlemleri - bitiş
 
-
-    //provider ile database işlemleri - başlangıç
-    void addCategory(){
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NoteContract.CategoryEntry.COLUMN_CATEGORY, "Deneme Kategori");
-        Uri resultUri = getContentResolver().insert(NoteContract.CategoryEntry.COTNENT_URI, contentValues);
-        Toast.makeText(this, "Eklendi : " + resultUri, Toast.LENGTH_LONG).show();
-
-    }
-
-    void showCategory(){
-
-        String[] projection = {"_id", "category"};
-        Cursor cursor = getContentResolver().query(NoteContract.CategoryEntry.COTNENT_URI, projection, null, null, null, null);
-        String allCategories = "";
-        while (cursor.moveToNext()){
-            String id = cursor.getString(0);
-            String category = cursor.getString(1);
-
-            allCategories = allCategories + " id : " + id + " kategori : " + category + "\n";
-        }
-        Toast.makeText(this, allCategories, Toast.LENGTH_LONG).show();
-
-    }
-
-    void addNoteWithProvider(){
-
-        ContentValues newNote = new ContentValues();
-        newNote.put(NoteContract.NoteEntry.COLUMN_NOTE, "Provider Notu");
-        newNote.put(NoteContract.NoteEntry.COLUMN_CATEGORY_ID, 1);
-        newNote.put(NoteContract.NoteEntry.COLUMN_CREATE_DATE, "10-02-2018");
-        newNote.put(NoteContract.NoteEntry.COLUMN_DONE, 1);
-
-        Uri resultUri = getContentResolver().insert(NoteContract.NoteEntry.COTNENT_URI, newNote);
-        Toast.makeText(this, "Eklendi : " + resultUri, Toast.LENGTH_LONG).show();
-
-    }
-
-    void showAllNotesWithProvider(){
-
-        //iki tabloyu joinlediğimiz için hangi alanları göstermek istiyorsak o tabloyu başına yazmalıyız.
-        String[] projection = {"Notes._id", "Notes.note", "Categories._id", "Categories.category"};
-        Cursor resultCursor = getContentResolver().query(NoteContract.NoteEntry.COTNENT_URI, projection, null, null, null );
-        String strAllNotes = "";
-
-        while(resultCursor.moveToNext()){
-            for (int i = 0; i<=3; i++){
-                strAllNotes += resultCursor.getString(i) + " - ";
+    void setNotesAdapter(){
+        String[] notes = getResources().getStringArray(R.array.notes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.list_item, R.id.txtNote, notes );
+        lstNotes.setAdapter(adapter);
+        lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent noteIntent = new Intent(MainActivity.this, NoteActivity.class);
+                noteIntent.putExtra("noteContent", (String) lstNotes.getItemAtPosition(i));
+                startActivity(noteIntent);
             }
-            strAllNotes += "\n";
-        }
-
-        Toast.makeText(this, strAllNotes, Toast.LENGTH_LONG).show();
-
+        });
     }
-
-    void updateNoteWithProvider(){
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "yine güncellendi");
-        String selection = " _id = ?";
-        String[] selectionArgs = {"2"};
-
-        int id = getContentResolver().update(NoteContract.NoteEntry.COTNENT_URI, contentValues, selection, selectionArgs);
-        Toast.makeText(this, "Not güncellendi : " + id, Toast.LENGTH_SHORT).show();
-
-    }
-
-    void deteleNoteWithProvider(){
-
-        String selection = " _id = ?";
-        String[] selectionArgs = {"2"};
-
-        int id = getContentResolver().delete(NoteContract.NoteEntry.COTNENT_URI, selection, selectionArgs);
-
-        Toast.makeText(this, "Not silindi : " + id, Toast.LENGTH_SHORT).show();
-
-        showAllNotesWithProvider();
-    }
-    //provider ile database işlemleri - bitiş
-
+*/
 }
