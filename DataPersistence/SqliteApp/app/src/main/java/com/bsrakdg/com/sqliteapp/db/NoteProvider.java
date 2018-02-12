@@ -88,42 +88,57 @@ public class NoteProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+
         switch (uriMatcher.match(uri)){ //hangi tabloya insert yapılacak onu kontrol etmeliyiz
             case URI_CODE_NOTES:
-
-                break;
-
+                return delete(uri,selection, selectionArgs, NoteContract.NoteEntry.TABLE_NAME);
             case URI_CODE_CATEGORIES:
-
-                break;
+                return delete(uri,selection, selectionArgs, NoteContract.CategoryEntry.TABLE_NAME);
+            default:
+                throw new IllegalArgumentException("INSERT UNKNOW URI : " + uri);
         }
-        return 0;
+
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String selection, @Nullable String[] selectionArgs) {
+
         switch (uriMatcher.match(uri)){ //hangi tabloya insert yapılacak onu kontrol etmeliyiz
             case URI_CODE_NOTES:
-
-                break;
-
+                return update(uri, contentValues, selection, selectionArgs, NoteContract.NoteEntry.TABLE_NAME);
             case URI_CODE_CATEGORIES:
-
-                break;
+                return update(uri, contentValues, selection, selectionArgs, NoteContract.CategoryEntry.TABLE_NAME);
+            default:
+                throw new IllegalArgumentException("UPDATE UNKNOW URI : " + uri);
         }
-        return 0;
+
     }
 
-    private Uri addNew(Uri uri, ContentValues contentValues, String tableName){
+    private Uri addNew(Uri uri, ContentValues contentValues, String strTableName){
 
-        long id = sqLiteDatabase.insert(tableName, null, contentValues);
+        long id = sqLiteDatabase.insert(strTableName, null, contentValues);
         if (id == -1) { //ekleme yapılmamış
             Log.e(TAG, "insert hata : " + uri );
         }
         return ContentUris.withAppendedId(uri, id);//kendisine gelen uri' nin sonuna bir şey ekle gönder
     }
 
+    private int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs, String strTableName){
+        int id = sqLiteDatabase.update(strTableName, contentValues, selection, selectionArgs);
+        if (id == 0) { //güncelleme yapılmamış
+            Log.e(TAG, "update hata : " + uri );
+            return -1;
+        }
+        return id;
+    }
 
-
+    private int delete(Uri uri, String selection, String[] selectionArgs, String strTableName){
+        int id = sqLiteDatabase.delete(strTableName, selection, selectionArgs);
+        if (id == 0) { //güncelleme yapılmamış
+            Log.e(TAG, "delete hata : " + uri );
+            return -1;
+        }
+        return id;
+    }
 }

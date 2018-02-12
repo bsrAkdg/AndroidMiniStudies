@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setNotesAdapter();
+
+        deteleNoteWithProvider();
     }
 
     @Override
@@ -253,6 +255,30 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, strAllNotes, Toast.LENGTH_LONG).show();
 
+    }
+
+    void updateNoteWithProvider(){
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "yine güncellendi");
+        String selection = " _id = ?";
+        String[] selectionArgs = {"2"};
+
+        int id = getContentResolver().update(NoteContract.NoteEntry.COTNENT_URI, contentValues, selection, selectionArgs);
+        Toast.makeText(this, "Not güncellendi : " + id, Toast.LENGTH_SHORT).show();
+
+    }
+
+    void deteleNoteWithProvider(){
+
+        String selection = " _id = ?";
+        String[] selectionArgs = {"2"};
+
+        int id = getContentResolver().delete(NoteContract.NoteEntry.COTNENT_URI, selection, selectionArgs);
+
+        Toast.makeText(this, "Not silindi : " + id, Toast.LENGTH_SHORT).show();
+
+        showAllNotesWithProvider();
     }
     //provider ile database işlemleri - bitiş
 
