@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,8 +45,27 @@ public class NoteProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+
+        Cursor cursor = null;
+        SQLiteQueryBuilder sqLiteQueryBuilder; //iki tabloyu join yapmak istediğimizde kullanıyoruz. çünkü query tek tablo adı alıyor.
+        String strJoinTables = "Notes inner join Categories on Notes.categoryId = Categories._id";
+
+        switch (uriMatcher.match(uri)){ //hangi tabloya insert yapılacak onu kontrol etmeliyiz
+            case URI_CODE_NOTES:
+                sqLiteQueryBuilder = new SQLiteQueryBuilder();
+                sqLiteQueryBuilder.setTables(strJoinTables);
+                cursor = sqLiteQueryBuilder.query(sqLiteDatabase, projection, selection, selectionArgs, null, null, null);
+                break;
+
+            case URI_CODE_CATEGORIES:
+                cursor = sqLiteDatabase.query(NoteContract.CategoryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                break;
+
+            default:
+                throw new IllegalArgumentException("QUERY UNKNOW URI " + uri);
+        }
+        return cursor;
     }
 
     @Nullable
