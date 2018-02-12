@@ -65,6 +65,9 @@ public class NoteProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("QUERY UNKNOW URI " + uri);
         }
+        //Cursor loader kullanırken onCreateLoader() metodunda **
+        //bu uri ile gelen verilerdeki değişiklikleri dinleyeceğiz demektir.
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -121,6 +124,8 @@ public class NoteProvider extends ContentProvider {
         if (id == -1) { //ekleme yapılmamış
             Log.e(TAG, "insert hata : " + uri );
         }
+        //bu uri ile gelen verilerdeki değişiklikleri dinleyeceğiz demektir.
+        getContext().getContentResolver().notifyChange(uri, null);
         return ContentUris.withAppendedId(uri, id);//kendisine gelen uri' nin sonuna bir şey ekle gönder
     }
 
@@ -130,6 +135,8 @@ public class NoteProvider extends ContentProvider {
             Log.e(TAG, "update hata : " + uri );
             return -1;
         }
+        //bu uri ile gelen verilerdeki değişiklikleri dinleyeceğiz demektir.
+        getContext().getContentResolver().notifyChange(uri, null);
         return id;
     }
 
@@ -139,6 +146,8 @@ public class NoteProvider extends ContentProvider {
             Log.e(TAG, "delete hata : " + uri );
             return -1;
         }
+        //bu uri ile gelen verilerdeki değişiklikleri dinleyeceğiz demektir.
+        getContext().getContentResolver().notifyChange(uri, null);
         return id;
     }
 }

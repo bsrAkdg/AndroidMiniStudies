@@ -1,7 +1,10 @@
 package com.bsrakdg.com.sqliteapp;
 
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -23,7 +26,9 @@ import android.widget.Toast;
 import com.bsrakdg.com.sqliteapp.db.DatabaseHelper;
 import com.bsrakdg.com.sqliteapp.db.NoteContract;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+
+
     //Amaç : Sqlite' a veri kaydedip okuma işlemlerini gerçekleştirme
 /*    custom datavase işlemleri adımlar
                  TODO -- Sqlite Örnek işlemler
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     ListView lstNotes;
     Toolbar toolbar;
     FloatingActionButton fab;
+    NotesCursorAdapter notesCursorAdapter;
+    Cursor cursor;
 
     void init(){
 
@@ -84,8 +91,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void setCursorAdapter(){
-        Cursor cursor = showAllNotesWithProvider();
-        NotesCursorAdapter notesCursorAdapter = new NotesCursorAdapter(this, cursor, false); //autoRequery mutlaka false yap main thread' i kitliyor.
+        //main thread kitlenmesine engel olmak için cursor loader kullanımı.
+        // loader initialize edilir onCreateLoader() metoduna düşer.
+        getLoaderManager().initLoader(100, null, this);
+        // TODO loader eklendi :
+        // cursor = showAllNotesWithProvider()"böyle çekmeye gerek kalmadı
+        notesCursorAdapter = new NotesCursorAdapter(this, cursor, false);
+        //autoRequery mutlaka false yap main thread' i kitliyor.
         lstNotes.setAdapter(notesCursorAdapter);
     }
 
@@ -216,6 +228,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //provider ile database işlemleri - bitiş
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        //loader create edilir.
+        if (id == 100){
+
+            String[] projection = {"Notes._id", "Notes.note", "Categories._id", "Categories.category"};
+            //NoteProvider' ın query metoduna düşer bu yüzden query metoduna ekleme yapmalıyız **
+            return new CursorLoader(this, NoteContract.NoteEntry.COTNENT_URI, projection,
+                    null, null, null);
+            //asenkron çalışır veri eklediğimiz zaman günceller
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        //adapteri parametre olarak gelen cursor ile değiştir.
+        notesCursorAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //veri erişilemez olduğu zaman
+        notesCursorAdapter.swapCursor(null);
+    }
 
 
 /*  TODO -- Sqlite Örnek işlemler
