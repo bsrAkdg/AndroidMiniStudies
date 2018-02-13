@@ -1,4 +1,4 @@
-package com.bsrakdg.com.sqliteapp;
+package com.bsrakdg.com.sqliteapp.ui;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -6,24 +6,20 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.bsrakdg.com.sqliteapp.db.DatabaseHelper;
+import com.bsrakdg.com.sqliteapp.R;
+import com.bsrakdg.com.sqliteapp.adapters.NotesCursorAdapter;
 import com.bsrakdg.com.sqliteapp.db.NoteContract;
 import com.bsrakdg.com.sqliteapp.db.NoteQueryHandler;
 
@@ -393,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     void setNotesAdapter(){
         String[] notes = getResources().getStringArray(R.array.notes);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.list_item, R.id.txtNote, notes );
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.list_item_note, R.id.txtNote, notes );
         lstNotes.setAdapter(adapter);
         lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

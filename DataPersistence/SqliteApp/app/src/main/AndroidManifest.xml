@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,8 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CategoryActivity"/>
-        <activity android:name=".NoteActivity"/>
+        <activity android:name=".ui.CategoryActivity"/>
+        <activity android:name=".ui.NoteActivity"/>
         <provider
             android:authorities="com.bsrakdg.com.sqliteapp.db.NoteProvider"
             android:name=".db.NoteProvider"

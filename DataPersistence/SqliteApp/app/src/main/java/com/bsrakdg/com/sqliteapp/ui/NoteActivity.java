@@ -1,9 +1,11 @@
-package com.bsrakdg.com.sqliteapp;
+package com.bsrakdg.com.sqliteapp.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
+
+import com.bsrakdg.com.sqliteapp.R;
 
 /**
  * Created by bakdag on 5.02.2018.
@@ -27,9 +29,9 @@ public class NoteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        if (!getIntent().getExtras().getString("noteContent","").equals("")){
+/*        if (!getIntent().getExtras().getString("noteContent","").equals("")){
             edtTxtNote.setText(getIntent().getExtras().getString("noteContent"));
-        }
+        }*/
 
     }
 

@@ -55,11 +55,11 @@ public class NoteProvider extends ContentProvider {
             case URI_CODE_NOTES:
                 sqLiteQueryBuilder = new SQLiteQueryBuilder();
                 sqLiteQueryBuilder.setTables(strJoinTables);
-                cursor = sqLiteQueryBuilder.query(sqLiteDatabase, projection, selection, selectionArgs, null, null, null);
+                cursor = sqLiteQueryBuilder.query(sqLiteDatabase, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
 
             case URI_CODE_CATEGORIES:
-                cursor = sqLiteDatabase.query(NoteContract.CategoryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                cursor = sqLiteDatabase.query(NoteContract.CategoryEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
 
             default:
