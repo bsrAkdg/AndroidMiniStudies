@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -122,7 +123,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }else if(id == R.id.action_delete_all_categories){
         //    deleteCategoryWithProvider(ALL_CATEGORIES);
             return true;
+        }else if(id == R.id.action_create_test_note){
+            createTestNotes();
+            return true;
+        }else if(id == R.id.action_create_test_category){
+            createTestCategories();
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -228,6 +236,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
     //provider ile database işlemleri - bitiş
+
+    void createTestCategories(){
+        for (int i=0; i<=20; i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NoteContract.CategoryEntry.COLUMN_CATEGORY, "New Category : "+i);
+            getContentResolver().insert(NoteContract.CategoryEntry.COTNENT_URI, contentValues);
+        }
+    }
+
+    void createTestNotes(){
+        //UI kitlenmesine sebep olduk çünkü bu main thread' de çalışır.
+        for (int i=0; i<=5000; i++){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "New Note  : "+i);
+            contentValues.put(NoteContract.NoteEntry.COLUMN_CATEGORY_ID, (i%20)+1);
+            contentValues.put(NoteContract.NoteEntry.COLUMN_CREATE_DATE, "13-02-2018");
+            contentValues.put(NoteContract.NoteEntry.COLUMN_DONE, 1);
+
+            Uri uri = getContentResolver().insert(NoteContract.NoteEntry.COTNENT_URI, contentValues);
+        }
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
