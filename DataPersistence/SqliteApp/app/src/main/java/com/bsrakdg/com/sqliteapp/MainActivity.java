@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bsrakdg.com.sqliteapp.db.DatabaseHelper;
 import com.bsrakdg.com.sqliteapp.db.NoteContract;
+import com.bsrakdg.com.sqliteapp.db.NoteQueryHandler;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -241,12 +242,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         for (int i=0; i<=20; i++){
             ContentValues contentValues = new ContentValues();
             contentValues.put(NoteContract.CategoryEntry.COLUMN_CATEGORY, "New Category : "+i);
+
+            /* UI kitlenmesine sebep olduk çünkü bu main thread' de çalışır.
             getContentResolver().insert(NoteContract.CategoryEntry.COTNENT_URI, contentValues);
+            */
+            NoteQueryHandler handler = new NoteQueryHandler(this.getContentResolver());
+            handler.startInsert(1, null, NoteContract.CategoryEntry.COTNENT_URI, contentValues);
         }
     }
 
     void createTestNotes(){
-        //UI kitlenmesine sebep olduk çünkü bu main thread' de çalışır.
         for (int i=0; i<=5000; i++){
             ContentValues contentValues = new ContentValues();
             contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "New Note  : "+i);
@@ -254,7 +259,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             contentValues.put(NoteContract.NoteEntry.COLUMN_CREATE_DATE, "13-02-2018");
             contentValues.put(NoteContract.NoteEntry.COLUMN_DONE, 1);
 
+            /* UI kitlenmesine sebep olduk çünkü bu main thread' de çalışır.
             Uri uri = getContentResolver().insert(NoteContract.NoteEntry.COTNENT_URI, contentValues);
+            */
+
+            //Content Resolver' da asenkron işlemler için yardımcı : AsyncQueryHandler
+            NoteQueryHandler handler = new NoteQueryHandler(this.getContentResolver());
+            handler.startInsert(1, null, NoteContract.NoteEntry.COTNENT_URI, contentValues);
         }
     }
 
