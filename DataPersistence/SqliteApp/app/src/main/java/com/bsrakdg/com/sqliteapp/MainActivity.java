@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -124,14 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }else if(id == R.id.action_delete_all_categories){
             deleteCategoryWithProvider(ALL_CATEGORIES);
             return true;
-        }else if(id == R.id.action_create_test_note){
-            createTestNotes();
-            return true;
-        }else if(id == R.id.action_create_test_category){
-            createTestCategories();
-            return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -243,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         handler.startDelete(1, null, NoteContract.CategoryEntry.COTNENT_URI, selection, selectionArgs);
     }
 
+<<<<<<< HEAD
     void createTestCategories(){
         for (int i=0; i<=20; i++){
             ContentValues contentValues = new ContentValues();
@@ -274,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+=======
+>>>>>>> parent of f9ce177... createTestNotes ile uzun sürecek bir işlem yapıp UI kitlenmesine sebep olduk
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         //loader create edilir.
