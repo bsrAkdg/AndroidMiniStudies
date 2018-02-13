@@ -119,10 +119,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             startActivity(new Intent(MainActivity.this, CategoryActivity.class));
             return true;
         }else if(id == R.id.action_delete_all_notes){
-        //    deleteNoteWithProvider(ALL_NOTES);
-             return true;
+            deleteNoteWithProvider(ALL_NOTES);
+            return true;
         }else if(id == R.id.action_delete_all_categories){
-        //    deleteCategoryWithProvider(ALL_CATEGORIES);
+            deleteCategoryWithProvider(ALL_CATEGORIES);
             return true;
         }else if(id == R.id.action_create_test_note){
             createTestNotes();
@@ -175,12 +175,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    Cursor showAllNotesWithProvider(){
+    void showAllNotesWithProvider(){
 
         //iki tabloyu joinlediğimiz için hangi alanları göstermek istiyorsak o tabloyu başına yazmalıyız.
         String[] projection = {"Notes._id", "Notes.note", "Categories._id", "Categories.category"};
         Cursor resultCursor = getContentResolver().query(NoteContract.NoteEntry.COTNENT_URI, projection, null, null, null );
-/*
+
         String strAllNotes = "";
 
         while(resultCursor.moveToNext()){
@@ -190,8 +190,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             strAllNotes += "\n";
         }
         Toast.makeText(this, strAllNotes, Toast.LENGTH_LONG).show();
-*/
-        return resultCursor;
 
     }
 
@@ -216,10 +214,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             selectionArgs= null;
             selection= null;
         }
+
+        /*UI kitlenmesine sebep olur
         int id = getContentResolver().delete(NoteContract.NoteEntry.COTNENT_URI, selection, selectionArgs);
-
         Toast.makeText(this, "Not silindi : " + id, Toast.LENGTH_SHORT).show();
+        */
 
+        NoteQueryHandler handler = new NoteQueryHandler(this.getContentResolver());
+        handler.startDelete(1, null, NoteContract.NoteEntry.COTNENT_URI, selection, selectionArgs);
     }
 
     void deleteCategoryWithProvider(int removedId){
@@ -231,12 +233,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             selectionArgs= null;
             selection= null;
         }
+
+        /*UI kitlenmesine sebep olur
         int id = getContentResolver().delete(NoteContract.CategoryEntry.COTNENT_URI, selection, selectionArgs);
-
         Toast.makeText(this, "Category silindi : " + id, Toast.LENGTH_SHORT).show();
+        */
 
+        NoteQueryHandler handler = new NoteQueryHandler(this.getContentResolver());
+        handler.startDelete(1, null, NoteContract.CategoryEntry.COTNENT_URI, selection, selectionArgs);
     }
-    //provider ile database işlemleri - bitiş
 
     void createTestCategories(){
         for (int i=0; i<=20; i++){
@@ -294,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //veri erişilemez olduğu zaman
         notesCursorAdapter.swapCursor(null);
     }
-
+    //provider ile database işlemleri - bitiş
 
 /*  TODO -- Sqlite Örnek işlemler
     onCreate(){
