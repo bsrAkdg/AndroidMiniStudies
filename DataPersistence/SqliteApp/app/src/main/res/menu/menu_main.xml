@@ -26,4 +26,16 @@
         android:title="@string/action_remove_categories"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/action_create_categories"
+        android:orderInCategory="201"
+        android:title="@string/action_test_category"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_create_notes"
+        android:orderInCategory="202"
+        android:title="@string/action_test_note"
+        app:showAsAction="never"/>
+
 </menu>
