@@ -3,38 +3,138 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.NoteActivity">
+    android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/spnrCategories"
+        android:id="@+id/spnrCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:entries="@array/categories"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginEnd="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edtTxtNote"
-        android:layout_width="match_parent"
+        android:layout_width="291dp"
+        android:layout_height="231dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="Not Yaz"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:scrollbars="vertical"
+        android:text=""
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/spnrCategory" />
+
+    <Button
+        android:id="@+id/btnCreateDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="29dp"
+        android:onClick="chooseDate"
+        android:text="Başlama Tarihi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtNote"
+        android:layout_marginStart="32dp" />
+
+    <EditText
+        android:id="@+id/edtTxtCreateDate"
+        android:layout_width="177dp"
+        android:layout_height="41dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="29dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Not Yaz"
-        app:layout_constraintHorizontal_bias="0.504"
+        android:text="Tarih"
+        app:layout_constraintLeft_toRightOf="@+id/btnCreateDate"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtNote"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/btnStopDate"
+        android:layout_width="141dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="34dp"
+        android:layout_marginTop="8dp"
+        android:onClick="chooseDate"
+        android:text="Bitiş Tarihi"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/edtTxtFinishDate"
+        app:layout_constraintTop_toBottomOf="@+id/btnCreateDate" />
+
+    <EditText
+        android:id="@+id/edtTxtFinishDate"
+        android:layout_width="177dp"
+        android:layout_height="41dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Tarih"
+        app:layout_constraintLeft_toRightOf="@+id/btnCreateDate"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtCreateDate"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.724" />
+
+    <CheckBox
+        android:id="@+id/chxDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YAPILDI MI"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spnrCategories" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtFinishDate" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <Button
+        android:id="@+id/btnDeleteNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="deleteNote"
+        android:text="Notu Sil"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/fabSave"
+        app:layout_constraintTop_toBottomOf="@+id/chxDone"
+        app:layout_constraintVertical_bias="0.555" />
 
 
 </android.support.constraint.ConstraintLayout>

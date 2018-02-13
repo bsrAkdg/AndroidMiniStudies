@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bsrakdg.com.sqliteapp.ui.MainActivity"
     tools:showIn="@layout/activity_main">
+
 
     <Spinner
         android:id="@+id/spnrCategories"
@@ -17,7 +16,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="16dp"
-        android:entries="@array/categories"
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
@@ -26,16 +24,18 @@
 
     <ListView
         android:id="@+id/lstNotes"
-        android:layout_width="321dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="16dp"
-        android:entries="@array/notes"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_width="313dp"
+        android:layout_height="418dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spnrCategories" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/spnrCategories"
+        tools:layout_editor_absoluteY="66dp" />
 </android.support.constraint.ConstraintLayout>

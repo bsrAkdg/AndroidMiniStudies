@@ -14,13 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bsrakdg.com.sqliteapp.R;
+import com.bsrakdg.com.sqliteapp.adapters.CategoryCursorAdapter;
 import com.bsrakdg.com.sqliteapp.adapters.NotesCursorAdapter;
 import com.bsrakdg.com.sqliteapp.db.NoteContract;
+import com.bsrakdg.com.sqliteapp.db.NoteContract.NoteEntry;
+import com.bsrakdg.com.sqliteapp.db.NoteContract.CategoryEntry;
 import com.bsrakdg.com.sqliteapp.db.NoteQueryHandler;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -56,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Toolbar toolbar;
     FloatingActionButton fab;
     NotesCursorAdapter notesCursorAdapter;
-    Cursor cursor;
+    CategoryCursorAdapter categoryCursorAdapter;
+    Cursor cursor, categoryCursor;
 
     void init(){
 
@@ -74,7 +79,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        setCursorAdapter();
+        //kategorileri göster
+        setCategoryAdapter();
+
+        setNoteAdapter();
 
     }
 
@@ -87,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    void setCursorAdapter(){
+    void setNoteAdapter(){
         //main thread kitlenmesine engel olmak için cursor loader kullanımı.
         // loader initialize edilir onCreateLoader() metoduna düşer.
         getLoaderManager().initLoader(100, null, this);
@@ -96,6 +104,46 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         notesCursorAdapter = new NotesCursorAdapter(this, cursor, false);
         //autoRequery mutlaka false yap main thread' i kitliyor.
         lstNotes.setAdapter(notesCursorAdapter);
+
+        lstNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                Intent noteIntent = new Intent(MainActivity.this, NoteActivity.class);
+
+                Cursor cursor = (Cursor) lstNotes.getItemAtPosition(position);
+
+                noteIntent.putExtra(NoteEntry._ID, cursor.getString(cursor.getColumnIndex(NoteEntry._ID)));
+                noteIntent.putExtra(NoteEntry.COLUMN_NOTE, cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_NOTE)));
+                noteIntent.putExtra(NoteEntry.COLUMN_CREATE_DATE, cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_CREATE_DATE)));
+                noteIntent.putExtra(NoteEntry.COLUMN_FINISH_DATE, cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_FINISH_DATE)));
+                noteIntent.putExtra(NoteEntry.COLUMN_DONE, cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_DONE)));
+                noteIntent.putExtra(NoteEntry.COLUMN_CATEGORY_ID, cursor.getString(cursor.getColumnIndex(NoteEntry.COLUMN_CATEGORY_ID)));
+                noteIntent.putExtra(CategoryEntry.COLUMN_CATEGORY, cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_CATEGORY)));
+
+                startActivity(noteIntent);
+            }
+        });
+    }
+
+    void setCategoryAdapter(){
+
+        getLoaderManager().initLoader(150, null, this);
+
+        categoryCursorAdapter =  new CategoryCursorAdapter(this, categoryCursor, false);
+        spnrCategories.setAdapter(categoryCursorAdapter);
+        spnrCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     @Override
@@ -253,10 +301,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     void createTestNotes(){
         for (int i=0; i<=1000; i++){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(NoteContract.NoteEntry.COLUMN_NOTE, "New Note  : "+i);
-            contentValues.put(NoteContract.NoteEntry.COLUMN_CATEGORY_ID, (i%20)+1);
-            contentValues.put(NoteContract.NoteEntry.COLUMN_CREATE_DATE, "13-02-2018");
-            contentValues.put(NoteContract.NoteEntry.COLUMN_DONE, 1);
+            contentValues.put(NoteEntry.COLUMN_NOTE, "New Note  : "+i);
+            contentValues.put(NoteEntry.COLUMN_CATEGORY_ID, (i%20)+1);
+            contentValues.put(NoteEntry.COLUMN_CREATE_DATE, "13-02-2018");
+            contentValues.put(NoteEntry.COLUMN_FINISH_DATE, "01-03-2018");
+            contentValues.put(NoteEntry.COLUMN_DONE, (i%2==0) ? 1 : 0);
 
             /* UI kitlenmesine sebep olduk çünkü bu main thread' de çalışır.
             Uri uri = getContentResolver().insert(NoteContract.NoteEntry.COTNENT_URI, contentValues);
@@ -264,20 +313,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             //Content Resolver' da asenkron işlemler için yardımcı : AsyncQueryHandler
             NoteQueryHandler handler = new NoteQueryHandler(this.getContentResolver());
-            handler.startInsert(1, null, NoteContract.NoteEntry.COTNENT_URI, contentValues);
+            handler.startInsert(1, null, NoteEntry.COTNENT_URI, contentValues);
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        //loader create edilir.
+        //loader create edilir id 100 ise notlar, 150 ise kategoriler
         if (id == 100){
+            //görmek istediğim alanları projection' a gönderiyorum. İki tablo birleşimi olduğu için query' de SQLiteQueryBuilder olmalı!
+            String[] projection = {NoteEntry.TABLE_NAME + "." + NoteEntry._ID,
+                    NoteEntry.COLUMN_NOTE, NoteEntry.COLUMN_CREATE_DATE,
+                    NoteEntry.COLUMN_FINISH_DATE, NoteEntry.COLUMN_DONE,
+                    NoteEntry.COLUMN_CATEGORY_ID, CategoryEntry.COLUMN_CATEGORY};
+            //hangi kategori seçildiyse ona dair notlar gelir
+            String selection = NoteEntry.COLUMN_CATEGORY_ID + " = ?";
+            String[] selectionArgs = {String.valueOf(spnrCategories.getSelectedItemId())};
+            //String sortOrder = "_id DESC";
 
-            String[] projection = {"Notes._id", "Notes.note", "Categories._id", "Categories.category"};
             //NoteProvider' ın query metoduna düşer bu yüzden query metoduna ekleme yapmalıyız **
             return new CursorLoader(this, NoteContract.NoteEntry.COTNENT_URI, projection,
-                    null, null, null);
+                    selection, selectionArgs, null);
             //asenkron çalışır veri eklediğimiz zaman günceller
+        }else if(id == 150){
+
+            String[] projection = {CategoryEntry._ID, CategoryEntry.COLUMN_CATEGORY};
+            String sortOrder = "_id DESC";
+
+            return new CursorLoader(this, CategoryEntry.COTNENT_URI, projection,
+                    null, null, sortOrder);
         }
         return null;
     }
@@ -285,14 +349,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         //adapteri parametre olarak gelen cursor ile değiştir.
-        notesCursorAdapter.swapCursor(cursor);
+        if (loader.getId() == 100){
+            notesCursorAdapter.swapCursor(cursor);
+        }else if(loader.getId() == 150){
+            categoryCursorAdapter.swapCursor(cursor);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         //veri erişilemez olduğu zaman
         notesCursorAdapter.swapCursor(null);
+        categoryCursorAdapter.swapCursor(null);
     }
+
     //provider ile database işlemleri - bitiş
 
 /*  TODO -- Sqlite Örnek işlemler
