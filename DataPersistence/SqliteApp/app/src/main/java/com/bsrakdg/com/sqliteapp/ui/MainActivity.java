@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     CategoryCursorAdapter categoryCursorAdapter;
     Cursor cursor, categoryCursor;
 
+    long selectedCategoryId;
     void init(){
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -134,8 +135,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         spnrCategories.setAdapter(categoryCursorAdapter);
         spnrCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                selectedCategoryId = id;
+                //her seferinde categoryId değişeceği için loader' ı güncellemem gerekli
+                getLoaderManager().restartLoader(100, null, MainActivity.this);
             }
 
             @Override
@@ -328,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     NoteEntry.COLUMN_CATEGORY_ID, CategoryEntry.COLUMN_CATEGORY};
             //hangi kategori seçildiyse ona dair notlar gelir
             String selection = NoteEntry.COLUMN_CATEGORY_ID + " = ?";
-            String[] selectionArgs = {String.valueOf(spnrCategories.getSelectedItemId())};
+            String[] selectionArgs = {String.valueOf(selectedCategoryId)};
             //String sortOrder = "_id DESC";
 
             //NoteProvider' ın query metoduna düşer bu yüzden query metoduna ekleme yapmalıyız **

@@ -137,12 +137,10 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     void setCategoryAdapter(){
-
+        
         //kategorileri database' den alıp gösterir
         String[] projection = {CategoryEntry._ID, CategoryEntry.COLUMN_CATEGORY};
-        String sortOrder = "_id DESC";
-
-        categoryCursor = getContentResolver().query(CategoryEntry.COTNENT_URI, projection, null, null, sortOrder);
+        categoryCursor = getContentResolver().query(CategoryEntry.COTNENT_URI, projection, null, null, null);
 
         categoryAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, categoryCursor,
                 new String[]{"category"}, new int[]{android.R.id.text1}, 0);
